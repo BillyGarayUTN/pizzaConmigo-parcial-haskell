@@ -1,0 +1,7 @@
+cradle:
+  stack:
+    - path: "./src"
+      component: "kata-funcional:lib"
+
+    - path: "./test"
+      component: "kata-funcional:test:kata-funcional-test"
