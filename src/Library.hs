@@ -1,26 +1,38 @@
 module Library where
 import PdePreludat
 
-funcionLoca :: Number -> String -> Number 
-funcionLoca numero palabra
-    | odd numero                     = numero
-    | (length palabra) > numero      = length palabra
-    | otherwise                      = numero `mod` (length palabra)
-
 doble :: Number -> Number
 doble numero = numero * 2
 
-siguiente :: Number  -> Number
-siguiente numero = numero + 1
+data Pizza = Pizza{
+    ingredientes::[String],
+    tamanio::Number,
+    calorias::Number
+} deriving(Show,Eq)
 
-siguienteEsPar :: Number -> Bool
-siguienteEsPar numero= (even . siguiente) numero
+grandeDeMuzza = Pizza{ingredientes=["salsa","mozzarella","oregano"], tamanio=8,calorias=350}
 
-type Nombre = String
-type Edad = Number
-type Persona = (Nombre,Edad)
-clara :: Persona
-clara = ("clara",27)
+nivelDeSatisfaccion :: Pizza -> Number
+nivelDeSatisfaccion pizza
+    | "palmito" `elem` ingredientes pizza = 0
+    | (500<).calorias $ pizza = length.ingredientes $ pizza
+    | otherwise = (`div` 2).length.ingredientes $ pizza
 
-obtenerEdad :: Persona -> Edad
-obtenerEdad = snd 
+valorPizza :: Pizza -> Number
+valorPizza pizza  = (tamanio pizza *).(120*).length.ingredientes $ pizza
+
+nuevoIngrediente :: String -> Pizza -> Pizza
+nuevoIngrediente ingredienteNuevo pizza = pizza { ingredientes = (ingredienteNuevo:).ingredientes $ pizza,
+    calorias = (length ingredienteNuevo +).calorias $ pizza }
+
+agrandar :: Pizza -> Pizza
+agrandar pizza = pizza{ tamanio = min 10.(2+).tamanio $ pizza}
+
+mezcladita ::  Pizza -> Pizza -> Pizza
+mezcladita primerPizza pizza = pizza{ ,calorias = (calorias pizza+).(`div` 2) $ calorias primerPizza }
+
+--aux ingredienteRepetido
+ingredienteRepetido :: String->Pizza -> Pizza
+ingredienteRepetido ingrediente pizza
+    | elem ingrediente $ ingredientes pizza = pizza
+    | otherwise = ingredientes = pizza { ingredientes = (ingredienteNuevo:).ingredientes $ pizza}
